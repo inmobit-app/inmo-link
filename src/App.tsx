@@ -19,6 +19,7 @@ import BrokerDashboard from "@/pages/broker/Dashboard";
 import PropertyList from "@/pages/broker/PropertyList";
 import Pipeline from "@/pages/broker/Pipeline";
 import LeadDetail from "@/pages/broker/LeadDetail";
+import Agenda from "@/pages/broker/Agenda";
 import MandateList from "@/pages/broker/MandateList";
 import MandateCreate from "@/pages/broker/MandateCreate";
 import OwnerPortal from "@/pages/owner/Portal";
@@ -65,6 +66,7 @@ const App = () => (
             <Route path="/corredor/mandatos/nuevo" element={<ProtectedRoute allowedRoles={["BROKER"]}><MandateCreate /></ProtectedRoute>} />
             <Route path="/corredor/pipeline" element={<ProtectedRoute allowedRoles={["BROKER"]}><Pipeline /></ProtectedRoute>} />
             <Route path="/corredor/leads/:id" element={<ProtectedRoute allowedRoles={["BROKER"]}><LeadDetail /></ProtectedRoute>} />
+            <Route path="/corredor/agenda" element={<ProtectedRoute allowedRoles={["BROKER"]}><Agenda /></ProtectedRoute>} />
 
             {/* Owner */}
             <Route path="/dueno/portal" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerPortal /></ProtectedRoute>} />
