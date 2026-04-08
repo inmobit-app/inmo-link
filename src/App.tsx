@@ -49,7 +49,8 @@ const App = () => (
             <Route path="/" element={<RoleRedirect />} />
 
             {/* Client */}
-            <Route path="/buscar" element={<ProtectedRoute allowedRoles={["CLIENT"]}><Search /></ProtectedRoute>} />
+            <Route path="/buscar" element={<Search />} />
+            <Route path="/comparar" element={<Compare />} />
 
             {/* Broker */}
             <Route path="/corredor/dashboard" element={<ProtectedRoute allowedRoles={["BROKER"]}><BrokerDashboard /></ProtectedRoute>} />
