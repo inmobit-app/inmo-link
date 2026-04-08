@@ -19,6 +19,7 @@ import BrokerDashboard from "@/pages/broker/Dashboard";
 import PropertyList from "@/pages/broker/PropertyList";
 import Pipeline from "@/pages/broker/Pipeline";
 import LeadDetail from "@/pages/broker/LeadDetail";
+import Agenda from "@/pages/broker/Agenda";
 import MandateList from "@/pages/broker/MandateList";
 import MandateCreate from "@/pages/broker/MandateCreate";
 import OwnerPortal from "@/pages/owner/Portal";

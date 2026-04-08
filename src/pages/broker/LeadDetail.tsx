@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import LeadChat from "@/components/chat/LeadChat";
+import VisitActions from "@/components/visit/VisitActions";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { ArrowLeft, User, Calendar, MessageSquare, DollarSign, XCircle, UserPlus } from "lucide-react";
-import type { LeadStage } from "@/types/database";
+import { ArrowLeft, User, MessageSquare, DollarSign, XCircle, UserPlus } from "lucide-react";
+import type { LeadStage, Visit } from "@/types/database";
 
 const STAGES: { key: LeadStage; label: string }[] = [
   { key: "NEW", label: "Nuevo" },
@@ -43,37 +43,33 @@ export default function LeadDetail() {
   const [property, setProperty] = useState<any>(null);
   const [client, setClient] = useState<any>(null);
   const [mandate, setMandate] = useState<any>(null);
-  const [messages, setMessages] = useState<any[]>([]);
-  const [visits, setVisits] = useState<any[]>([]);
+  const [visits, setVisits] = useState<Visit[]>([]);
   const [loading, setLoading] = useState(true);
   const [lostOpen, setLostOpen] = useState(false);
   const [lostReason, setLostReason] = useState("");
   const [assignOpen, setAssignOpen] = useState(false);
   const [assignEmail, setAssignEmail] = useState("");
 
-  useEffect(() => {
+  const loadData = async () => {
     if (!id) return;
-    const load = async () => {
-      const { data: l } = await supabase.from("leads").select("*").eq("id", id).single();
-      if (!l) { setLoading(false); return; }
-      setLead(l);
+    const { data: l } = await supabase.from("leads").select("*").eq("id", id).single();
+    if (!l) { setLoading(false); return; }
+    setLead(l);
 
-      const [{ data: p }, { data: c }, { data: msgs }, { data: vis }, { data: m }] = await Promise.all([
-        supabase.from("properties").select("*").eq("id", l.property_id).single(),
-        supabase.from("users").select("*").eq("id", l.client_id).single(),
-        supabase.from("messages").select("*").eq("lead_id", id).order("created_at"),
-        supabase.from("visits").select("*").eq("lead_id", id).order("scheduled_at"),
-        supabase.from("mandates").select("*").eq("property_id", l.property_id).eq("status", "ACTIVE").maybeSingle(),
-      ]);
-      setProperty(p);
-      setClient(c);
-      setMessages(msgs || []);
-      setVisits(vis || []);
-      setMandate(m);
-      setLoading(false);
-    };
-    load();
-  }, [id]);
+    const [{ data: p }, { data: c }, { data: vis }, { data: m }] = await Promise.all([
+      supabase.from("properties").select("*").eq("id", l.property_id).single(),
+      supabase.from("users").select("*").eq("id", l.client_id).single(),
+      supabase.from("visits").select("*").eq("lead_id", id).order("scheduled_at"),
+      supabase.from("mandates").select("*").eq("property_id", l.property_id).eq("status", "ACTIVE").maybeSingle(),
+    ]);
+    setProperty(p);
+    setClient(c);
+    setVisits((vis || []) as Visit[]);
+    setMandate(m);
+    setLoading(false);
+  };
+
+  useEffect(() => { loadData(); }, [id]);
 
   const updateStage = async (newStage: LeadStage) => {
     const { error } = await supabase.from("leads").update({ stage: newStage, updated_at: new Date().toISOString() }).eq("id", lead.id);
@@ -142,7 +138,6 @@ export default function LeadDetail() {
 
       <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Property */}
           <Card>
             <CardHeader><CardTitle className="text-base">Propiedad</CardTitle></CardHeader>
             <CardContent>
@@ -152,7 +147,6 @@ export default function LeadDetail() {
             </CardContent>
           </Card>
 
-          {/* Client */}
           <Card>
             <CardHeader><CardTitle className="text-base flex items-center gap-2"><User className="h-4 w-4" /> Cliente</CardTitle></CardHeader>
             <CardContent>
@@ -192,6 +186,9 @@ export default function LeadDetail() {
           </CardContent>
         </Card>
 
+        {/* Visits with actions */}
+        <VisitActions visits={visits} leadId={lead.id} isBroker={true} onUpdate={loadData} />
+
         {/* Commission */}
         <Card>
           <CardHeader><CardTitle className="text-base flex items-center gap-2"><DollarSign className="h-4 w-4" /> Comisión esperada</CardTitle></CardHeader>
@@ -218,28 +215,6 @@ export default function LeadDetail() {
                 </>
               )}
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Visits */}
-        <Card>
-          <CardHeader><CardTitle className="text-base flex items-center gap-2"><Calendar className="h-4 w-4" /> Visitas</CardTitle></CardHeader>
-          <CardContent>
-            {visits.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Sin visitas registradas</p>
-            ) : (
-              <div className="space-y-3">
-                {visits.map((v: any) => (
-                  <div key={v.id} className="flex items-center justify-between p-3 rounded-lg bg-muted">
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{new Date(v.scheduled_at).toLocaleDateString("es-AR", { weekday: "long", day: "numeric", month: "long" })}</p>
-                      {v.feedback_client && <p className="text-xs text-muted-foreground mt-1">"{v.feedback_client}"</p>}
-                    </div>
-                    <Badge variant={v.status === "COMPLETED" ? "default" : v.status === "CANCELLED" ? "destructive" : "secondary"}>{v.status}</Badge>
-                  </div>
-                ))}
-              </div>
-            )}
           </CardContent>
         </Card>
 
