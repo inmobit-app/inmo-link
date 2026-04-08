@@ -15,7 +15,11 @@ import Profile from "@/pages/Profile";
 import Search from "@/pages/client/Search";
 import BrokerDashboard from "@/pages/broker/Dashboard";
 import PropertyList from "@/pages/broker/PropertyList";
+import MandateList from "@/pages/broker/MandateList";
+import MandateCreate from "@/pages/broker/MandateCreate";
 import OwnerPortal from "@/pages/owner/Portal";
+import OwnerMandateList from "@/pages/owner/MandateList";
+import MandateSign from "@/pages/owner/MandateSign";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import PropertyDetail from "@/pages/property/PropertyDetail";
 import PropertyWizard from "@/components/property/PropertyWizard";
@@ -51,10 +55,14 @@ const App = () => (
             <Route path="/corredor/propiedades" element={<ProtectedRoute allowedRoles={["BROKER"]}><PropertyList /></ProtectedRoute>} />
             <Route path="/corredor/propiedades/nueva" element={<ProtectedRoute allowedRoles={["BROKER"]}><PropertyWizard /></ProtectedRoute>} />
             <Route path="/corredor/propiedades/:id/editar" element={<ProtectedRoute allowedRoles={["BROKER"]}><PropertyWizard /></ProtectedRoute>} />
+            <Route path="/corredor/mandatos" element={<ProtectedRoute allowedRoles={["BROKER"]}><MandateList /></ProtectedRoute>} />
+            <Route path="/corredor/mandatos/nuevo" element={<ProtectedRoute allowedRoles={["BROKER"]}><MandateCreate /></ProtectedRoute>} />
 
             {/* Owner */}
             <Route path="/dueno/portal" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerPortal /></ProtectedRoute>} />
             <Route path="/dueno/propiedades/nueva" element={<ProtectedRoute allowedRoles={["OWNER"]}><PropertyWizard /></ProtectedRoute>} />
+            <Route path="/dueno/mandatos" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerMandateList /></ProtectedRoute>} />
+            <Route path="/dueno/mandatos/:id/firmar" element={<ProtectedRoute allowedRoles={["OWNER"]}><MandateSign /></ProtectedRoute>} />
 
             {/* Admin */}
             <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminDashboard /></ProtectedRoute>} />
