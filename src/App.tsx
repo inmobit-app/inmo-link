@@ -13,6 +13,7 @@ import ForgotPassword from "@/pages/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword";
 import Profile from "@/pages/Profile";
 import Search from "@/pages/client/Search";
+import Compare from "@/pages/client/Compare";
 import BrokerDashboard from "@/pages/broker/Dashboard";
 import PropertyList from "@/pages/broker/PropertyList";
 import MandateList from "@/pages/broker/MandateList";
