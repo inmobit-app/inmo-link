@@ -54,6 +54,7 @@ const App = () => (
             {/* Client */}
             <Route path="/buscar" element={<Search />} />
             <Route path="/comparar" element={<Compare />} />
+            <Route path="/mis-consultas" element={<ProtectedRoute allowedRoles={["CLIENT"]}><Inquiries /></ProtectedRoute>} />
 
             {/* Broker */}
             <Route path="/corredor/dashboard" element={<ProtectedRoute allowedRoles={["BROKER"]}><BrokerDashboard /></ProtectedRoute>} />
