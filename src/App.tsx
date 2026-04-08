@@ -55,6 +55,8 @@ const App = () => (
             <Route path="/corredor/propiedades" element={<ProtectedRoute allowedRoles={["BROKER"]}><PropertyList /></ProtectedRoute>} />
             <Route path="/corredor/propiedades/nueva" element={<ProtectedRoute allowedRoles={["BROKER"]}><PropertyWizard /></ProtectedRoute>} />
             <Route path="/corredor/propiedades/:id/editar" element={<ProtectedRoute allowedRoles={["BROKER"]}><PropertyWizard /></ProtectedRoute>} />
+            <Route path="/corredor/mandatos" element={<ProtectedRoute allowedRoles={["BROKER"]}><MandateList /></ProtectedRoute>} />
+            <Route path="/corredor/mandatos/nuevo" element={<ProtectedRoute allowedRoles={["BROKER"]}><MandateCreate /></ProtectedRoute>} />
 
             {/* Owner */}
             <Route path="/dueno/portal" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerPortal /></ProtectedRoute>} />
