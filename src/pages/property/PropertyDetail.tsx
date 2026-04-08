@@ -97,42 +97,61 @@ export default function PropertyDetail() {
     load();
   }, [id]);
 
+  const determineCommissionRule = async (propertyId: string): Promise<string> => {
+    const { data: mandate } = await supabase
+      .from("mandates")
+      .select("type")
+      .eq("property_id", propertyId)
+      .eq("status", "ACTIVE")
+      .maybeSingle();
+    if (mandate?.type === "EXCLUSIVE") return "C_EXCLUSIVE";
+    return "C_OPEN";
+  };
+
   const requestVisit = async () => {
     if (!session?.user || !property) return;
     setSubmitting(true);
     try {
-      let { data: lead } = await supabase
+      // Check for existing lead
+      const { data: existingLead } = await supabase
         .from("leads")
         .select("id")
         .eq("property_id", property.id)
         .eq("client_id", session.user.id)
         .maybeSingle();
 
-      if (!lead) {
-        const { data: newLead, error } = await supabase
-          .from("leads")
-          .insert({
-            property_id: property.id,
-            client_id: session.user.id,
-            capturing_broker_id: property.broker_id,
-            stage: "VISIT_SCHEDULED",
-            source: "organic",
-          })
-          .select("id")
-          .single();
-        if (error) throw error;
-        lead = newLead;
+      if (existingLead) {
+        toast({ title: "Ya solicitaste una visita para esta propiedad" });
+        setVisitOpen(false);
+        return;
       }
 
+      const commissionRule = await determineCommissionRule(property.id);
+
+      const { data: newLead, error } = await supabase
+        .from("leads")
+        .insert({
+          property_id: property.id,
+          client_id: session.user.id,
+          capturing_broker_id: property.broker_id,
+          client_broker_id: property.broker_id,
+          stage: "NEW",
+          commission_rule: commissionRule,
+          source: "organic",
+        })
+        .select("id")
+        .single();
+      if (error) throw error;
+
       await supabase.from("visits").insert({
-        lead_id: lead!.id,
+        lead_id: newLead.id,
         scheduled_at: new Date(Date.now() + 86400000 * 2).toISOString(),
         status: "PENDING",
       });
 
       if (visitNote.trim()) {
         await supabase.from("messages").insert({
-          lead_id: lead!.id,
+          lead_id: newLead.id,
           sender_id: session.user.id,
           body: visitNote.trim(),
         });
@@ -336,7 +355,7 @@ export default function PropertyDetail() {
                 size="lg"
                 onClick={() => {
                   if (!session) {
-                    navigate("/login");
+                    navigate(`/login?redirect=/propiedad/${property.id}`);
                     return;
                   }
                   if (userRole !== "CLIENT") {
