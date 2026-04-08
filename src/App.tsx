@@ -16,6 +16,8 @@ import Search from "@/pages/client/Search";
 import Compare from "@/pages/client/Compare";
 import BrokerDashboard from "@/pages/broker/Dashboard";
 import PropertyList from "@/pages/broker/PropertyList";
+import Pipeline from "@/pages/broker/Pipeline";
+import LeadDetail from "@/pages/broker/LeadDetail";
 import MandateList from "@/pages/broker/MandateList";
 import MandateCreate from "@/pages/broker/MandateCreate";
 import OwnerPortal from "@/pages/owner/Portal";
