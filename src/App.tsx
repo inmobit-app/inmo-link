@@ -61,6 +61,8 @@ const App = () => (
             {/* Owner */}
             <Route path="/dueno/portal" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerPortal /></ProtectedRoute>} />
             <Route path="/dueno/propiedades/nueva" element={<ProtectedRoute allowedRoles={["OWNER"]}><PropertyWizard /></ProtectedRoute>} />
+            <Route path="/dueno/mandatos" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerMandateList /></ProtectedRoute>} />
+            <Route path="/dueno/mandatos/:id/firmar" element={<ProtectedRoute allowedRoles={["OWNER"]}><MandateSign /></ProtectedRoute>} />
 
             {/* Admin */}
             <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminDashboard /></ProtectedRoute>} />
