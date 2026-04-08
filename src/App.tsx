@@ -14,8 +14,11 @@ import ResetPassword from "@/pages/ResetPassword";
 import Profile from "@/pages/Profile";
 import Search from "@/pages/client/Search";
 import BrokerDashboard from "@/pages/broker/Dashboard";
+import PropertyList from "@/pages/broker/PropertyList";
 import OwnerPortal from "@/pages/owner/Portal";
 import AdminDashboard from "@/pages/admin/Dashboard";
+import PropertyDetail from "@/pages/property/PropertyDetail";
+import PropertyWizard from "@/components/property/PropertyWizard";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +37,9 @@ const App = () => (
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
 
+            {/* Public property detail */}
+            <Route path="/propiedad/:id" element={<PropertyDetail />} />
+
             {/* Role redirect */}
             <Route path="/" element={<RoleRedirect />} />
 
@@ -42,9 +48,13 @@ const App = () => (
 
             {/* Broker */}
             <Route path="/corredor/dashboard" element={<ProtectedRoute allowedRoles={["BROKER"]}><BrokerDashboard /></ProtectedRoute>} />
+            <Route path="/corredor/propiedades" element={<ProtectedRoute allowedRoles={["BROKER"]}><PropertyList /></ProtectedRoute>} />
+            <Route path="/corredor/propiedades/nueva" element={<ProtectedRoute allowedRoles={["BROKER"]}><PropertyWizard /></ProtectedRoute>} />
+            <Route path="/corredor/propiedades/:id/editar" element={<ProtectedRoute allowedRoles={["BROKER"]}><PropertyWizard /></ProtectedRoute>} />
 
             {/* Owner */}
             <Route path="/dueno/portal" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerPortal /></ProtectedRoute>} />
+            <Route path="/dueno/propiedades/nueva" element={<ProtectedRoute allowedRoles={["OWNER"]}><PropertyWizard /></ProtectedRoute>} />
 
             {/* Admin */}
             <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminDashboard /></ProtectedRoute>} />
