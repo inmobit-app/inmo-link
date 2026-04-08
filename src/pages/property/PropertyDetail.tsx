@@ -355,7 +355,7 @@ export default function PropertyDetail() {
                 size="lg"
                 onClick={() => {
                   if (!session) {
-                    navigate("/login");
+                    navigate(`/login?redirect=/propiedad/${property.id}`);
                     return;
                   }
                   if (userRole !== "CLIENT") {
