@@ -85,18 +85,15 @@ export default function Search() {
   const properties = data?.pages.flatMap((p) => p.data) ?? [];
 
   // Favorites
-  const { data: favorites = [] } = useInfiniteQuery({
+  const { data: favIds = [] } = useQuery({
     queryKey: ["user-favorites", user?.id],
     queryFn: async () => {
-      if (!user) return { data: [] as string[], nextPage: undefined };
+      if (!user) return [] as string[];
       const { data } = await supabase.from("favorites").select("property_id").eq("user_id", user.id);
-      return { data: (data ?? []).map((f: any) => f.property_id), nextPage: undefined };
+      return (data ?? []).map((f: any) => f.property_id as string);
     },
-    getNextPageParam: () => undefined,
-    initialPageParam: 0,
     enabled: !!user,
   });
-  const favIds = favorites?.pages?.[0]?.data ?? [];
 
   const toggleFav = useMutation({
     mutationFn: async (propertyId: string) => {
