@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import LeadChat from "@/components/chat/LeadChat";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -242,22 +243,11 @@ export default function LeadDetail() {
           </CardContent>
         </Card>
 
-        {/* Messages */}
+        {/* Chat */}
         <Card>
-          <CardHeader><CardTitle className="text-base flex items-center gap-2"><MessageSquare className="h-4 w-4" /> Historial de mensajes</CardTitle></CardHeader>
-          <CardContent>
-            {messages.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Sin mensajes</p>
-            ) : (
-              <div className="space-y-3 max-h-64 overflow-y-auto">
-                {messages.map((m: any) => (
-                  <div key={m.id} className={`p-3 rounded-lg text-sm ${m.sender_id === user?.id ? "bg-primary/10 ml-8" : "bg-muted mr-8"}`}>
-                    <p className="text-foreground">{m.body}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{new Date(m.created_at).toLocaleString("es-AR")}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+          <CardHeader><CardTitle className="text-base flex items-center gap-2"><MessageSquare className="h-4 w-4" /> Chat con cliente</CardTitle></CardHeader>
+          <CardContent className="p-0">
+            <LeadChat leadId={lead.id} className="h-96" />
           </CardContent>
         </Card>
       </div>
