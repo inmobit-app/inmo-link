@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -37,6 +37,30 @@ const AMENITY_LABELS: Record<string, string> = {
   grill: "Parrilla",
   garden: "Jardín",
 };
+
+function PropertyMap({ lat, lng, token }: { lat: number; lng: number; token: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!ref.current) return;
+    let map: any;
+    import("mapbox-gl").then((mapboxgl) => {
+      import("mapbox-gl/dist/mapbox-gl.css");
+      (mapboxgl as any).accessToken = token;
+      map = new mapboxgl.default.Map({
+        container: ref.current!,
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: [lng, lat],
+        zoom: 15,
+        interactive: false,
+      });
+      new mapboxgl.default.Marker().setLngLat([lng, lat]).addTo(map);
+    });
+    return () => map?.remove();
+  }, [lat, lng, token]);
+
+  return <div ref={ref} className="h-56 rounded-lg border border-border" />;
+}
 
 export default function PropertyDetail() {
   const { id } = useParams();
@@ -77,7 +101,6 @@ export default function PropertyDetail() {
     if (!session?.user || !property) return;
     setSubmitting(true);
     try {
-      // Create or find a lead
       let { data: lead } = await supabase
         .from("leads")
         .select("id")
@@ -217,15 +240,14 @@ export default function PropertyDetail() {
 
             <Separator />
 
-            {/* Features grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {property.rooms && (
+              {property.rooms != null && property.rooms > 0 && (
                 <div className="flex items-center gap-2 text-foreground">
                   <Bed className="h-5 w-5 text-muted-foreground" />
                   <span>{property.rooms} amb.</span>
                 </div>
               )}
-              {property.bathrooms && (
+              {property.bathrooms != null && property.bathrooms > 0 && (
                 <div className="flex items-center gap-2 text-foreground">
                   <Bath className="h-5 w-5 text-muted-foreground" />
                   <span>{property.bathrooms} baño{property.bathrooms > 1 ? "s" : ""}</span>
@@ -237,13 +259,13 @@ export default function PropertyDetail() {
                   <span>{property.parking} cochera{property.parking > 1 ? "s" : ""}</span>
                 </div>
               )}
-              {property.surface_total && (
+              {property.surface_total != null && (
                 <div className="flex items-center gap-2 text-foreground">
                   <Maximize className="h-5 w-5 text-muted-foreground" />
                   <span>{property.surface_total} m² tot.</span>
                 </div>
               )}
-              {property.surface_covered && (
+              {property.surface_covered != null && (
                 <div className="flex items-center gap-2 text-foreground">
                   <Maximize className="h-5 w-5 text-muted-foreground" />
                   <span>{property.surface_covered} m² cub.</span>
@@ -275,7 +297,6 @@ export default function PropertyDetail() {
               </>
             )}
 
-            {/* Map */}
             {mapToken && property.address_lat && property.address_lng && (
               <>
                 <Separator />
@@ -333,7 +354,6 @@ export default function PropertyDetail() {
         </div>
       </div>
 
-      {/* Visit dialog */}
       <Dialog open={visitOpen} onOpenChange={setVisitOpen}>
         <DialogContent>
           <DialogHeader>
@@ -357,29 +377,3 @@ export default function PropertyDetail() {
     </div>
   );
 }
-
-function PropertyMap({ lat, lng, token }: { lat: number; lng: number; token: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!ref.current) return;
-    let map: any;
-    import("mapbox-gl").then((mapboxgl) => {
-      import("mapbox-gl/dist/mapbox-gl.css");
-      (mapboxgl as any).accessToken = token;
-      map = new mapboxgl.default.Map({
-        container: ref.current!,
-        style: "mapbox://styles/mapbox/streets-v12",
-        center: [lng, lat],
-        zoom: 15,
-        interactive: false,
-      });
-      new mapboxgl.default.Marker().setLngLat([lng, lat]).addTo(map);
-    });
-    return () => map?.remove();
-  }, [lat, lng, token]);
-
-  return <div ref={ref} className="h-56 rounded-lg border border-border" />;
-}
-
-import { useRef } from "react";
