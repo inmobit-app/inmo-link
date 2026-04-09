@@ -428,7 +428,7 @@ export default function AdminCommissions() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </AdminLayout>
   );
 }
 
