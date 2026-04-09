@@ -69,6 +69,7 @@ const App = () => (
             <Route path="/corredor/pipeline" element={<ProtectedRoute allowedRoles={["BROKER"]}><Pipeline /></ProtectedRoute>} />
             <Route path="/corredor/leads/:id" element={<ProtectedRoute allowedRoles={["BROKER"]}><LeadDetail /></ProtectedRoute>} />
             <Route path="/corredor/agenda" element={<ProtectedRoute allowedRoles={["BROKER"]}><Agenda /></ProtectedRoute>} />
+            <Route path="/corredor/comisiones" element={<ProtectedRoute allowedRoles={["BROKER"]}><BrokerCommissions /></ProtectedRoute>} />
 
             {/* Owner */}
             <Route path="/dueno/portal" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerPortal /></ProtectedRoute>} />
