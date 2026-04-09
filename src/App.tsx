@@ -23,6 +23,7 @@ import Agenda from "@/pages/broker/Agenda";
 import MandateList from "@/pages/broker/MandateList";
 import MandateCreate from "@/pages/broker/MandateCreate";
 import OwnerPortal from "@/pages/owner/Portal";
+import OwnerPropertyDetail from "@/pages/owner/PropertyDetail";
 import OwnerMandateList from "@/pages/owner/MandateList";
 import MandateSign from "@/pages/owner/MandateSign";
 import AdminDashboard from "@/pages/admin/Dashboard";
@@ -73,6 +74,7 @@ const App = () => (
 
             {/* Owner */}
             <Route path="/dueno/portal" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerPortal /></ProtectedRoute>} />
+            <Route path="/dueno/propiedades/:id" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerPropertyDetail /></ProtectedRoute>} />
             <Route path="/dueno/propiedades/nueva" element={<ProtectedRoute allowedRoles={["OWNER"]}><PropertyWizard /></ProtectedRoute>} />
             <Route path="/dueno/mandatos" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerMandateList /></ProtectedRoute>} />
             <Route path="/dueno/mandatos/:id/firmar" element={<ProtectedRoute allowedRoles={["OWNER"]}><MandateSign /></ProtectedRoute>} />
