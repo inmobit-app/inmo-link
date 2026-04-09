@@ -72,10 +72,36 @@ export default function LeadDetail() {
   useEffect(() => { loadData(); }, [id]);
 
   const updateStage = async (newStage: LeadStage) => {
+    // If moving to CLOSED, trigger commission calculation
+    if (newStage === "CLOSED") {
+      // Check for completed visit first
+      const completedVisit = visits.find(v => v.status === "COMPLETED");
+      if (!completedVisit) {
+        toast({ title: "Error", description: "Debe existir una visita completada antes de cerrar el lead.", variant: "destructive" });
+        return;
+      }
+    }
+
     const { error } = await supabase.from("leads").update({ stage: newStage, updated_at: new Date().toISOString() }).eq("id", lead.id);
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
     setLead((prev: any) => ({ ...prev, stage: newStage }));
     toast({ title: `Etapa actualizada a ${STAGES.find(s => s.key === newStage)?.label}` });
+
+    // Trigger commission calculation after closing
+    if (newStage === "CLOSED") {
+      try {
+        const { error: fnErr } = await supabase.functions.invoke("calculate-commission", {
+          body: { lead_id: lead.id },
+        });
+        if (fnErr) {
+          toast({ title: "Advertencia", description: "Lead cerrado pero hubo un error calculando la comisión: " + fnErr.message, variant: "destructive" });
+        } else {
+          toast({ title: "Comisión calculada", description: "Se generó la comisión y se notificó al administrador." });
+        }
+      } catch {
+        toast({ title: "Advertencia", description: "No se pudo calcular la comisión automáticamente.", variant: "destructive" });
+      }
+    }
   };
 
   const markLost = async () => {
