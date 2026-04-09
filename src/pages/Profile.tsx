@@ -93,10 +93,21 @@ export default function Profile() {
     .slice(0, 2);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted px-4 py-8">
+    <div className="min-h-screen bg-muted">
+      <AppHeader />
+      <div className="flex items-center justify-center px-4 py-8">
       <Card className="w-full max-w-lg">
         <CardHeader>
-          <CardTitle>Mi perfil</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>Mi perfil</CardTitle>
+            {isAdmin && (
+              <Badge variant="outline" className="gap-1">
+                <Shield className="h-3 w-3" />
+                Administrador
+              </Badge>
+            )}
+          </div>
+        </CardHeader>
         </CardHeader>
         <form onSubmit={handleSave}>
           <CardContent className="space-y-6">
