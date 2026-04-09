@@ -26,6 +26,8 @@ import OwnerPortal from "@/pages/owner/Portal";
 import OwnerMandateList from "@/pages/owner/MandateList";
 import MandateSign from "@/pages/owner/MandateSign";
 import AdminDashboard from "@/pages/admin/Dashboard";
+import AdminCommissions from "@/pages/admin/Commissions";
+import BrokerCommissions from "@/pages/broker/Commissions";
 import PropertyDetail from "@/pages/property/PropertyDetail";
 import PropertyWizard from "@/components/property/PropertyWizard";
 import NotFound from "@/pages/NotFound";
@@ -67,6 +69,7 @@ const App = () => (
             <Route path="/corredor/pipeline" element={<ProtectedRoute allowedRoles={["BROKER"]}><Pipeline /></ProtectedRoute>} />
             <Route path="/corredor/leads/:id" element={<ProtectedRoute allowedRoles={["BROKER"]}><LeadDetail /></ProtectedRoute>} />
             <Route path="/corredor/agenda" element={<ProtectedRoute allowedRoles={["BROKER"]}><Agenda /></ProtectedRoute>} />
+            <Route path="/corredor/comisiones" element={<ProtectedRoute allowedRoles={["BROKER"]}><BrokerCommissions /></ProtectedRoute>} />
 
             {/* Owner */}
             <Route path="/dueno/portal" element={<ProtectedRoute allowedRoles={["OWNER"]}><OwnerPortal /></ProtectedRoute>} />
@@ -76,6 +79,7 @@ const App = () => (
 
             {/* Admin */}
             <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/comisiones" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminCommissions /></ProtectedRoute>} />
 
             {/* Profile */}
             <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
