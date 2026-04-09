@@ -12,7 +12,7 @@ import AppHeader from "@/components/AppHeader";
 import { Shield } from "lucide-react";
 
 export default function Profile() {
-  const { user, userRole } = useAuth();
+  const { user, userRole, isAdmin } = useAuth();
   const { toast } = useToast();
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
