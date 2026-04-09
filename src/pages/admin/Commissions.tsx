@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import AdminLayout from "@/components/admin/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -195,17 +196,9 @@ export default function AdminCommissions() {
   }
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      <div className="border-b bg-card px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/admin/dashboard")}>
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <h1 className="text-xl font-bold text-foreground">Administración de Comisiones</h1>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 py-6 space-y-6">
+    <AdminLayout>
+      <div className="p-6 space-y-6">
+        <h1 className="text-2xl font-bold text-foreground">Administración de Comisiones</h1>
         <Tabs defaultValue="all">
           <TabsList>
             <TabsTrigger value="all">Todas ({commissions.length})</TabsTrigger>
@@ -435,7 +428,7 @@ export default function AdminCommissions() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </AdminLayout>
   );
 }
 

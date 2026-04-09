@@ -28,6 +28,13 @@ import OwnerMandateList from "@/pages/owner/MandateList";
 import MandateSign from "@/pages/owner/MandateSign";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import AdminCommissions from "@/pages/admin/Commissions";
+import AdminUsers from "@/pages/admin/Users";
+import AdminProperties from "@/pages/admin/Properties";
+import AdminDuplicates from "@/pages/admin/Duplicates";
+import AdminBrokers from "@/pages/admin/Brokers";
+import AdminRules from "@/pages/admin/Rules";
+import AdminDisputes from "@/pages/admin/Disputes";
+import AdminConfig from "@/pages/admin/Config";
 import BrokerCommissions from "@/pages/broker/Commissions";
 import PropertyDetail from "@/pages/property/PropertyDetail";
 import PropertyWizard from "@/components/property/PropertyWizard";
@@ -81,7 +88,14 @@ const App = () => (
 
             {/* Admin */}
             <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/usuarios" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminUsers /></ProtectedRoute>} />
+            <Route path="/admin/propiedades" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminProperties /></ProtectedRoute>} />
+            <Route path="/admin/duplicados" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminDuplicates /></ProtectedRoute>} />
+            <Route path="/admin/corredores" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminBrokers /></ProtectedRoute>} />
             <Route path="/admin/comisiones" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminCommissions /></ProtectedRoute>} />
+            <Route path="/admin/reglas" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminRules /></ProtectedRoute>} />
+            <Route path="/admin/disputas" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminDisputes /></ProtectedRoute>} />
+            <Route path="/admin/configuracion" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminConfig /></ProtectedRoute>} />
 
             {/* Profile */}
             <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
