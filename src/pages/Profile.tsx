@@ -153,6 +153,7 @@ export default function Profile() {
           </CardContent>
         </form>
       </Card>
+      </div>
     </div>
   );
 }
