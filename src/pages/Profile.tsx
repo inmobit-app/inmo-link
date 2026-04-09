@@ -108,7 +108,6 @@ export default function Profile() {
             )}
           </div>
         </CardHeader>
-        </CardHeader>
         <form onSubmit={handleSave}>
           <CardContent className="space-y-6">
             <div className="flex items-center gap-4">
