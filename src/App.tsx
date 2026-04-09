@@ -26,6 +26,8 @@ import OwnerPortal from "@/pages/owner/Portal";
 import OwnerMandateList from "@/pages/owner/MandateList";
 import MandateSign from "@/pages/owner/MandateSign";
 import AdminDashboard from "@/pages/admin/Dashboard";
+import AdminCommissions from "@/pages/admin/Commissions";
+import BrokerCommissions from "@/pages/broker/Commissions";
 import PropertyDetail from "@/pages/property/PropertyDetail";
 import PropertyWizard from "@/components/property/PropertyWizard";
 import NotFound from "@/pages/NotFound";
