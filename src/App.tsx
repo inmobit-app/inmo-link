@@ -23,6 +23,7 @@ import Agenda from "@/pages/broker/Agenda";
 import MandateList from "@/pages/broker/MandateList";
 import MandateCreate from "@/pages/broker/MandateCreate";
 import OwnerPortal from "@/pages/owner/Portal";
+import OwnerPropertyDetail from "@/pages/owner/PropertyDetail";
 import OwnerMandateList from "@/pages/owner/MandateList";
 import MandateSign from "@/pages/owner/MandateSign";
 import AdminDashboard from "@/pages/admin/Dashboard";
