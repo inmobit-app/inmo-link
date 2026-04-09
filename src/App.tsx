@@ -79,6 +79,7 @@ const App = () => (
 
             {/* Admin */}
             <Route path="/admin/dashboard" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/comisiones" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AdminCommissions /></ProtectedRoute>} />
 
             {/* Profile */}
             <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
