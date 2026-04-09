@@ -7,6 +7,7 @@ interface AuthContextType {
   session: Session | null;
   user: User | null;
   userRole: UserRole | null;
+  isAdmin: boolean;
   userProfile: { full_name: string; avatar_url: string | null } | null;
   loading: boolean;
   signOut: () => Promise<void>;
@@ -16,6 +17,7 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   user: null,
   userRole: null,
+  isAdmin: false,
   userProfile: null,
   loading: true,
   signOut: async () => {},
@@ -75,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ session, user: session?.user ?? null, userRole, userProfile, loading, signOut }}>
+    <AuthContext.Provider value={{ session, user: session?.user ?? null, userRole, isAdmin: userRole === "ADMIN", userProfile, loading, signOut }}>
       {children}
     </AuthContext.Provider>
   );

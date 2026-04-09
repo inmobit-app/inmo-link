@@ -6,10 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import AppHeader from "@/components/AppHeader";
+import { Shield } from "lucide-react";
 
 export default function Profile() {
-  const { user, userRole } = useAuth();
+  const { user, userRole, isAdmin } = useAuth();
   const { toast } = useToast();
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -90,10 +93,20 @@ export default function Profile() {
     .slice(0, 2);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted px-4 py-8">
+    <div className="min-h-screen bg-muted">
+      <AppHeader />
+      <div className="flex items-center justify-center px-4 py-8">
       <Card className="w-full max-w-lg">
         <CardHeader>
-          <CardTitle>Mi perfil</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>Mi perfil</CardTitle>
+            {isAdmin && (
+              <Badge variant="outline" className="gap-1">
+                <Shield className="h-3 w-3" />
+                Administrador
+              </Badge>
+            )}
+          </div>
         </CardHeader>
         <form onSubmit={handleSave}>
           <CardContent className="space-y-6">
@@ -139,6 +152,7 @@ export default function Profile() {
           </CardContent>
         </form>
       </Card>
+      </div>
     </div>
   );
 }
